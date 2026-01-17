@@ -1,2 +1,3 @@
-# agent
-Agent rules, skills, commands for everyday usage
+# Agent
+
+This repository contains skills, rules, and commands for agent-based usage.
