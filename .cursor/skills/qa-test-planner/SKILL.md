@@ -12,6 +12,26 @@ A comprehensive skill for QA engineers to create test plans, generate manual tes
 
 ---
 
+## Clarification First
+
+**Before writing any test plan, test case, regression suite, or bug report**, ask clarification questions when the request is ambiguous or missing information needed for a useful deliverable.
+
+- **When to ask:** Scope is unclear, feature/flow is vague, environment or constraints are unknown, or you need specifics (e.g., platforms, priorities, acceptance criteria).
+- **Reusable things:** Before creating new tests, **ask the user to specify which reusable patterns, fixtures, or scenarios** they want to use or need created. Do not assume; get an explicit list or confirmation (e.g., “None” or “Use existing auth patterns”).
+- **Do not assume:** If you would have to guess to fill gaps, ask instead. Proceed to generate only after you have enough context or the user confirms they want assumptions documented.
+- **Keep it focused:** Ask only what’s needed for the current deliverable; 2–5 targeted questions are usually enough.
+
+**Example clarification questions by deliverable:**
+
+| Deliverable | Example questions |
+|-------------|-------------------|
+| Test plan | What’s in/out of scope? Which environments (staging, prod-like)? Any hard deadlines or dependencies? |
+| Test cases | Which user flows or requirements should be covered? Any specific edge cases or test data constraints? **Which reusable patterns/fixtures should be used or created?** |
+| Regression suite | How long can the suite run (e.g., 30 min vs 2 hr)? Which areas are P0 vs optional? **Any existing patterns/fixtures to reuse?** |
+| Bug report | Exact steps and environment (browser, OS, build)? Can you reproduce every time? Any workaround? |
+
+---
+
 ## Quick Start
 
 **Create a test plan:**
@@ -54,6 +74,12 @@ Your Request
     │
     ▼
 ┌─────────────────────────────────────────────────────┐
+│ 0. CLARIFY (if needed)                             │
+│    • Ask about scope, environment, priorities      │
+│    • Ask which reusable patterns/fixtures to use  │
+│    • Resolve ambiguities before writing            │
+│    • Proceed only when context is sufficient        │
+├─────────────────────────────────────────────────────┤
 │ 1. ANALYZE                                          │
 │    • Parse feature/requirement                      │
 │    • Identify test types needed                     │
@@ -73,6 +99,23 @@ Your Request
     ▼
 QA Deliverable Ready
 ```
+
+---
+
+## File Structure and Storage
+
+**Where to store created deliverables:**
+
+| Content | Path | When |
+|---------|------|------|
+| **Created results** (test plans, test cases, regression suites, bug reports) | `./tests/<domain>/<feature>/` | All new deliverables for a feature |
+| **Reusable patterns** (scenarios, test patterns, reusable tests) — domain-only | `./tests/<domain>/patterns/` | Reusable only within that domain |
+| **Reusable patterns** — global | `./shared/patterns/` | Reusable across domains |
+| **Fixtures** — domain-only | `./tests/<domain>/fixtures/` | Reusable only within that domain |
+| **Fixtures** — global | `./shared/fixtures/` | Reusable across domains |
+
+- **Domain** = product area or module (e.g. `auth`, `checkout`, `payments`). **Feature** = specific capability (e.g. `login`, `password-reset`, `card-payment`).
+- When creating tests, **ask the user which reusable patterns and fixtures** they want to use or need created **before** generating new test files. Use or create those in the paths above, then reference them from `./tests/<domain>/<feature>/` as needed.
 
 ---
 

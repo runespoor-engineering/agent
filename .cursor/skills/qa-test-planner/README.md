@@ -29,7 +29,12 @@ use the skill qa-test-planner
 
 ## How It Works
 
-The QA Test Planner follows a three-phase workflow:
+The QA Test Planner follows a four-step workflow:
+
+### 0. Clarify (if needed)
+- Asks about scope, environment, and priorities when the request is ambiguous
+- **Asks which reusable patterns and fixtures** you want to use or need created before generating new tests
+- Proceeds only when there is enough context; does not assume
 
 ### 1. Analyze Phase
 - Parses your feature description or requirement
@@ -40,12 +45,27 @@ The QA Test Planner follows a three-phase workflow:
 - Creates structured deliverables using proven templates
 - Applies QA best practices automatically
 - Includes comprehensive edge cases and test variations
-- Organizes content for easy execution and tracking
+- Writes outputs to the correct paths (see [File Structure and Storage](#file-structure-and-storage))
 
 ### 3. Validate Phase
 - Checks completeness of generated documentation
 - Verifies traceability between requirements and tests
 - Ensures all steps are clear and actionable
+
+## File Structure and Storage
+
+All created deliverables are stored under a consistent layout:
+
+| Content | Path | Use when |
+|---------|------|----------|
+| **Created results** (test plans, test cases, regression suites, bug reports) | `./tests/<domain>/<feature>/` | Any new deliverable for a feature |
+| **Reusable patterns** (scenarios, test patterns) — domain-only | `./tests/<domain>/patterns/` | Reusable only within that domain |
+| **Reusable patterns** — global | `./shared/patterns/` | Reusable across all domains |
+| **Fixtures** — domain-only | `./tests/<domain>/fixtures/` | Reusable only within that domain |
+| **Fixtures** — global | `./shared/fixtures/` | Reusable across all domains |
+
+- **Domain** = product area or module (e.g. `auth`, `checkout`, `payments`). **Feature** = specific capability (e.g. `login`, `password-reset`, `card-payment`).
+- Before creating new tests, the skill **asks you to specify which reusable patterns and fixtures** to use or create, then stores and references them using these paths.
 
 ## Key Features
 
@@ -259,6 +279,19 @@ qa-test-planner/
     └── create_bug_report.sh          # Interactive bug report creator
 ```
 
+**Where the skill writes outputs** (relative to your project root):
+
+```
+tests/
+├── <domain>/                    # e.g. auth, checkout, payments
+│   ├── <feature>/               # Created results (plans, cases, suites, bug reports)
+│   ├── patterns/                # Reusable scenarios/tests for this domain
+│   └── fixtures/                # Reusable fixtures for this domain
+shared/
+├── patterns/                    # Reusable scenarios/tests across domains
+└── fixtures/                    # Reusable fixtures across domains
+```
+
 ## Output Formats
 
 All deliverables are generated in **Markdown format** for easy copy-paste into:
@@ -284,8 +317,9 @@ Typical time to create documentation:
 
 1. Activate the skill: `/qa-test-planner`
 2. Describe what you need (test plan, test cases, bug report, etc.)
-3. Review and customize the generated documentation
-4. Copy to your tracking system (Jira, Linear, etc.)
+3. Answer clarification questions (scope, environment, **which reusable patterns/fixtures to use or create**)
+4. Review and customize the generated documentation
+5. Outputs are written to `./tests/<domain>/<feature>/`; copy to your tracking system (Jira, Linear, etc.) if needed
 
 ## Support
 
